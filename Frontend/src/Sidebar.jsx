@@ -2,7 +2,23 @@ import "./Sidebar.css";
 
 function Sidebar() {
   return (
-    <div>Sidebar</div>
+    <section className="sidebar">
+      <button>
+        <img src='src/assests/blacklogo.png' alt='gpt logo' className="logo"></img>
+       <span><i className="fa-solid fa-pen-to-square"></i></span> 
+      </button>
+
+      <ul className="history">
+        <li>history1</li>
+        <li>history2</li>
+        <li>history3</li>
+      </ul>
+
+      <div className="sign">
+        <p>By Parth &hearts;</p>
+      </div>
+
+    </section>
   )
 }
 
