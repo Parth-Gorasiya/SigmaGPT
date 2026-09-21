@@ -11,7 +11,12 @@ function Chat() {
    const [latestReply, setLatestReply] = useState(null);
 
    useEffect(() => {
-  if (!prevChats?.length || !reply) {
+    if(reply === null){
+      setLatestReply(null);
+      return;
+    }
+
+  if (!prevChats?.length) {
     return;
   }
 
@@ -56,6 +61,14 @@ function Chat() {
 
       <div className="gptDiv" key={"typing"}>
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>{latestReply}</ReactMarkdown> 
+        </div>
+    }
+
+    {
+      prevChats?.length > 0 && latestReply === null &&
+
+      <div className="gptDiv" key={"non-typing"}>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>{prevChats[prevChats.length-1].content}</ReactMarkdown> 
         </div>
     }
   
