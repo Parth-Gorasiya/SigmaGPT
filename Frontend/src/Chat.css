@@ -32,3 +32,25 @@
 pre {
     white-space: pre-wrap;
 }
+
+.gptDiv table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.gptDiv th,
+.gptDiv td {
+  border: 1px solid #555;
+  padding: 10px;
+  text-align: left;
+}
+
+.gptDiv th {
+  background-color: #292929;
+  font-weight: 600;
+}
+
+.gptDiv tr:nth-child(even) {
+  background-color: #212121;
+}
