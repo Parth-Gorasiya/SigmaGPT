@@ -6,9 +6,14 @@ import {ScaleLoader} from 'react-spinners';
 
 function ChatWindow() {
 
-  const {prompt, setPrompt, reply, setReply, currThreadId, prevChats, setPrevChats, setNewChat} = useContext(MyContext);
+  const {prompt, setPrompt, reply, setReply, currThreadId, setPrevChats, setNewChat} = useContext(MyContext);
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const getReply = async () => {
+    if (!prompt.trim() || loading) {
+    return;
+  }
+
     setLoading(true);
     setNewChat(false);
 
@@ -26,13 +31,16 @@ function ChatWindow() {
     try {
       const response = await fetch("http://localhost:8080/api/chat", options);
       const res = await response.json(); //reply from assistant
-      console.log(res);
+      if (!response.ok) {
+      throw new Error(res.error || "Failed to generate reply");
+    }
       setReply(res.reply);
       
     } catch (error) {
       console.log(error);
-    }
+    } finally { 
     setLoading(false);
+    }
   }
 
   //Appends new chat to prevChats
@@ -53,16 +61,28 @@ function ChatWindow() {
 
   }, [reply]);
 
+  const handleProfileClick = () => {
+    setIsOpen((previousState) => !previousState);
+};
+
   return (
     <div className="chatWindow">
       <div className="navbar">
         <span>SigmaGPT <i className="fa-solid fa-chevron-down"></i></span>
-        <div className="userIconDiv" >
+        <div className="userIconDiv" onClick={handleProfileClick}>
           <span className="userIcon"><i className="fa-solid fa-user"></i></span>
         </div>
+        {
+          isOpen &&
+          <div className="dropDown">
+          <div className="dropDownItem"><i className="fa-solid fa-gear"></i>Settings </div>
+          <div className="dropDownItem"><i className="fa-solid fa-cloud-arrow-up"></i>Upgrade Plan </div>
+          <div className="dropDownItem"><i className="fa-solid fa-arrow-right-from-bracket"></i>Log Out </div>
+          </div>
+        }
 
       </div>
-      <Chat> </Chat>
+      <Chat />
       <ScaleLoader color= '#fff' loading = {loading} />
 
       <div className="chatInput">
